@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    
+<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+    <div><h1 style="color:yellow">Project <bold style="color:red">Gandaberunda </h1>
+        <img src="{{ url_for('static', filename='img/a.jpg') }}" alt="lol" class="center">
+        <br />
+
+        <form class="grid" action="/views/">
+            <div class="center">
+            <label for="Name">Enter a search query :</label>
+            <input type="text" name="name" id="name"/>
+            <input type="submit" class="file_submit" />
+            <py-config>
+                packages = ["ssl", "urllib3", "requests"]
+              </py-config>
+            <py-script>
+                import ssl
+                import urllib3
+                import requests              
+
+                def search_website_1(query):
+            
+                    response = requests.get(f'https://www.youtube.com/@{query}', verify = False)
+
+                    # Check if the request was successful
+                    if response.status_code == 200:
+    
+                        return response.text
+                    else:
+                    # If not successful, return an error message
+                        return 'Error: Could not retrieve data from YouTube'
+
+                def search_website_2(query):
+                    # Make the API call to the second website using the requests library
+                    response = requests.get(f'https://instagram.com/{query}')
+
+                    # Check if the request was successful
+                    if response.status_code == 200:
+                        # If successful, return the data
+                        return response.text
+                    else:
+                        # If not successful, return an error message
+                        return 'Error: Could not retrieve data from Instagram'
+
+                # Get user input
+                query = input('Enter a search query: ')
+
+                # Call the search functions with the user input
+                results_website_1 = search_website_1(query)
+                results_website_2 = search_website_2(query)
+
+                # Search the results for the query
+                if query in results_website_1:
+                    print(f'Found "{query}" in YouTube:')
+                    print(f'URL: https://www.youtube.com/@{query}')
+                else:
+                    print(f'Could not find "{query}" in YouTube')
+
+                if query in results_website_2:
+                    print(f'Found "{query}" in Instagram:')
+                    print(f'URL: https://instagram.com/{query}')
+                else:
+                    print(f'Could not find "{query}" in Instagram')
+
+                </py-script>
+                
+            </div>
+            <button id="btn-print" class="btn btn-success btn-lg"
+				>Print & Generate PDF</button>
+        </form>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+			integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer">
+        </script>
+        <script src="{{ url_for('static', filename='js/print.js') }}"></script>
+        
+        
+    </div>
+</body>
+</html>
